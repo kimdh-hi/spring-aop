@@ -1,12 +1,10 @@
 package com.aop.controller;
 
+import com.aop.annotation.Encode;
 import com.aop.annotation.ExeTimer;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.aop.dto.DataDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Random;
 
 @Slf4j
 @RestController
@@ -43,10 +41,13 @@ public class TestController {
         return "db";
     }
 
-    @AllArgsConstructor
-    @Data
-    static class DataDto {
-        private String id;
-        private String content;
+    // AOP를 이용한 인코딩 및 디코딩
+    @Encode
+    @GetMapping("/encode")
+    public DataDto encode(@RequestBody DataDto dto) {
+
+        return dto;
     }
+
+
 }
