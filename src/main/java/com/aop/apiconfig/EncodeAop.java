@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/**
+ * Encode(처리) -> Decode(출력)
+ */
+
 @Slf4j
 @Aspect
 @Component
@@ -29,7 +33,7 @@ public class EncodeAop {
             if (arg instanceof DataDto) {
                 DataDto dto = (DataDto) arg;
                 String content = dto.getContent();
-                byte[] encoded = Base64.getEncoder().encode(content.getBytes(StandardCharsets.UTF_8));
+                String encoded = Base64.getEncoder().encodeToString(content.getBytes(StandardCharsets.UTF_8));
 
                 dto.setContent(String.valueOf(encoded));
                 log.info("beforeEncode content = {}", dto.getContent());
@@ -41,10 +45,11 @@ public class EncodeAop {
     public void afterDecode(JoinPoint joinPoint, Object returnObj) {
         DataDto dto = (DataDto) returnObj;
         String content = dto.getContent();
-        byte[] encoded = Base64.getEncoder().encode(content.getBytes(StandardCharsets.UTF_8));
+        log.info("Decode 전 afterReturning content = {}", dto.getContent());
+        byte[] decoded = Base64.getDecoder().decode(content);
 
-        dto.setContent(String.valueOf(encoded));
-        log.info("afterReturning content = {}", dto.getContent());
+        dto.setContent(new String(decoded));
+        log.info("Decode 후 afterReturning content = {}", dto.getContent());
     }
 
 }

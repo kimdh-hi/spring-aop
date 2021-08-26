@@ -1,5 +1,6 @@
 package com.aop.controller;
 
+import com.aop.annotation.Decode;
 import com.aop.annotation.Encode;
 import com.aop.annotation.ExeTimer;
 import com.aop.dto.DataDto;
@@ -41,13 +42,19 @@ public class TestController {
         return "db";
     }
 
-    // AOP를 이용한 인코딩 및 디코딩
+    // AOP를 이용한 인코딩
     @Encode
-    @GetMapping("/encode")
+    @PostMapping("/encode")
     public DataDto encode(@RequestBody DataDto dto) {
 
         return dto;
     }
 
+    // AOP를 이용한 디코딩
+    @Decode
+    @PostMapping("/decode")
+    public DataDto decode(@RequestBody DataDto dto) {
 
+        return dto;
+    }
 }
